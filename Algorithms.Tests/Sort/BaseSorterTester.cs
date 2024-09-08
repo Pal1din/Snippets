@@ -1,0 +1,45 @@
+using System.Numerics;
+using Algorithms.Implementations.Sort;
+using Algorithms.Interfaces;
+
+namespace Algorithms.Tests.Sort;
+
+public abstract class BaseSorterTester<T> where T : INumber<T>
+{ 
+    protected abstract List<Func<int, IEnumerable<T>>> Creators { get; }
+
+    [Test]
+    public void Test1()
+    {
+        foreach (var creator in Creators)
+        {
+            for (var i = 0; i < 5; i++)
+            {
+                var randomData = creator.Invoke(i).ToArray();
+                var orderedData = randomData.Order().ToArray();
+                CommonSortTest(randomData, orderedData);
+            }
+        }
+    }
+    
+    private static IEnumerable<Lazy<ISorter<T>>> Sorters => new Lazy<ISorter<T>>[]
+    {
+        new(new BubbleSorter<T>()),
+        new(new FastSorter<T>())
+    };
+
+    private static void CommonSortTest(IReadOnlyCollection<T> input, IReadOnlyCollection<T> expected)
+    {
+        foreach (var sorter in Sorters)
+        {
+            Console.WriteLine($"Start sorting by {sorter.Value.GetType()}");
+            var sorted = sorter.Value.Sort(input).ToArray();
+            Assert.Multiple(() =>
+            {
+                Assert.That(sorted != null && expected.SequenceEqual(sorted));
+                Assert.That(sorted != null && sorted.Length == input.Count);
+                Assert.That(sorted != null && sorted.Length == expected.Count);
+            });
+        } 
+    }
+}
