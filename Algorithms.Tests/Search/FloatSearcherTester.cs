@@ -1,9 +1,9 @@
 using Utils;
 
-namespace Algorithms.Tests.Sort;
+namespace Algorithms.Tests.Search;
 
 [TestFixture]
-public class FloatSorterTests : BaseSorterTester<float>
+public class FloatSearcherTester: BaseSearchTests<float>
 {
     protected override List<Func<int, IEnumerable<float>>> Creators =>
     [

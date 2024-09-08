@@ -1,9 +1,9 @@
 using Utils;
 
-namespace Algorithms.Tests.Sort;
+namespace Algorithms.Tests.Search;
 
 [TestFixture]
-public class IntSorterTests : BaseSorterTester<int>
+public class IntSearcherTester: BaseSearchTests<int>
 {
     protected override List<Func<int, IEnumerable<int>>> Creators => [x => RandomExtensions.GenerateRandomInts(x)];
 }
