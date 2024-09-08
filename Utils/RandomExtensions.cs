@@ -21,7 +21,13 @@ public class RandomExtensions
     {
         return GenerateRandomTs(count, Random.Shared.NextDouble);
     }
-
+    
+    public static IEnumerable<double> GenerateRandomDoublesExt(int count, int min = int.MinValue, int max = int.MaxValue)
+    {
+        return GenerateRandomTs(count, min, max,
+            (i, i1) => Random.Shared.Next(i + 1, i1 - 1) + Random.Shared.NextDouble());
+    }
+    
     public static IEnumerable<long> GenerateRandomLongs(int count)
     {
         return GenerateRandomTs(count, Random.Shared.NextInt64);
