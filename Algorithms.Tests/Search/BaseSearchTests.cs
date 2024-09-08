@@ -10,7 +10,7 @@ public abstract class BaseSearchTests<T> where T: INumber<T>
     protected abstract List<Func<int, IEnumerable<T>>> Creators { get; }
     
     [Test]
-    public void Test1()
+    public void ElementContainsInCollection()
     {
         foreach (var creator in Creators)
         {

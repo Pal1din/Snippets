@@ -10,7 +10,7 @@ public abstract class BaseSorterTester<T> where T : INumber<T>
     protected abstract List<Func<int, IEnumerable<T>>> Creators { get; }
 
     [Test]
-    public void Test1()
+    public void SortRealTimeRandomDataTest()
     {
         foreach (var creator in Creators)
         {
