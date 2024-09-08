@@ -1,6 +1,6 @@
 ﻿namespace Utils;
 
-public class RandomExtensions
+public static class RandomExtensions
 {
     public static IEnumerable<int> GenerateRandomInts(int count, int min = int.MinValue, int max = int.MaxValue)
     {
