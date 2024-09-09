@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+option csharp_namespace = "LeetCodeGrpcServer";
+
+package leetcode;
+
+service LeetCodeService{
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc GetSolved(GetProfileRequest) returns (GetSolvedResponse);
+  rpc GetCalendar(GetProfileRequest) returns (GetCalendarResponse);
+  rpc GetSkillStats(GetProfileRequest) returns (GetSkillStatsResponse);
+}
+
+message GetProfileRequest {
+  string username = 1;
+}
+message GetProfileResponse {
+  repeated Profile profile = 1;
+}
+message GetSolvedResponse {
+  repeated Solved solved = 1;
+}
+
+message GetCalendarResponse {
+  repeated Calendar calendar = 1;
+}
+
+message GetSkillStatsResponse {
+  repeated SkillStats skillStats = 1;
+}
+
+message Profile {
+  string username = 1;
+  string name = 2;
+  string birthday = 3;
+  string avatar = 4;
+  uint32 ranking = 5;
+  uint32 reputation = 6;
+  string gitHub = 7;
+  string twitter = 8;
+  string linkedIN = 9;
+  repeated string website = 10;
+  string country = 11;
+  string company = 12;
+  string school = 13;
+  repeated string skillTags = 14;
+  string about = 15;
+}
+
+message Solved {
+  uint32 solvedProblem = 1;
+  uint32 easySolved = 2;
+  uint32 mediumSolved = 3;
+  uint32 hardSolved = 4;
+  repeated TotalSubmissionNum totalSubmissionNum = 5;
+  repeated AcSubmissionNum acSubmissionNum = 6;
+}
+message TotalSubmissionNum {
+  string difficulty = 1;
+  uint32 count = 2;
+  uint32 submissions = 3;
+}
+message AcSubmissionNum {
+  string difficulty = 1;
+  uint32 count = 2;
+  uint32 submissions = 3;
+}
+
+message Calendar {
+  string submissionCalendar = 1;
+}
+
+
+
+message SkillStats {
+  Data data = 1;
+}
+message Data {
+  MatchedUser matchedUser = 1;
+}
+message MatchedUser {
+  TagProblemCounts tagProblemCounts = 1;
+}
+message TagProblemCounts {
+  repeated Advanced advanced = 1;
+  repeated Intermediate intermediate = 2;
+  repeated Fundamental fundamental = 3;
+}
+message Advanced {
+  string tagName = 1;
+  string tagSlug = 2;
+  uint32 problemsSolved = 3;
+}
+message Intermediate {
+  string tagName = 1;
+  string tagSlug = 2;
+  uint32 problemsSolved = 3;
+}
+message Fundamental {
+  string tagName = 1;
+  string tagSlug = 2;
+  uint32 problemsSolved = 3;
+}

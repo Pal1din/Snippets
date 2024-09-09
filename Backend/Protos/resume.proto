@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option csharp_namespace = "ResumeGrpcServer";
+
+package resume;
+
+service ResumeService {
+  rpc GetResumes (GetResumesRequest) returns (GetResumesResponse);
+}
+
+message GetResumesRequest {}
+
+message GetResumesResponse {
+  repeated Resume resumes = 1;
+}
+
+message Resume {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string summary = 5;
+  repeated Experience experiences = 6;
+}
+
+message Experience {
+  int32 id = 1;
+  string jobTitle = 2;
+  string company = 3;
+  string description = 4;
+  string startDate = 5;
+  string endDate = 6;
+}
