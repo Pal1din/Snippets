@@ -1,7 +1,16 @@
 using Backend.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using RestSharp;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(80, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
+});
 
 // Add services to the container.
 builder.Services.AddGrpc();
