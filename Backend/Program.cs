@@ -14,10 +14,12 @@ builder.WebHost.ConfigureKestrel(options =>
 
 // Add services to the container.
 builder.Services.AddGrpc();
+builder.Services.AddGrpcReflection();
 builder.Services.AddTransient<IRestClient>(
     _ => new RestClient(builder.Configuration.GetConnectionString("LeetCodeApi") ?? throw new ArgumentNullException()));
 
 var app = builder.Build();
+app.MapGrpcReflectionService();
 
 app.MapGrpcService<LeetcodeService>();
 // Configure the HTTP request pipeline.

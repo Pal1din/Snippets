@@ -54,4 +54,17 @@ public class LeetcodeService(IRestClient client) : LeetCodeGrpcServer.LeetCodeSe
         };
         return result;
     }
+
+    public override async Task<GetLanguageStatsResponse> GetLanguageStats(GetProfileRequest request, ServerCallContext context)
+    {
+        var restRequest = new RestRequest($"languageStats");
+        restRequest.AddQueryParameter("username", request.Username);
+        var executeAsync = await client.ExecuteAsync(restRequest);
+        var languageStats = LanguageStats.Parser.ParseJson(executeAsync.Content);
+        var result = new GetLanguageStatsResponse
+        {
+            LanguageStats = { languageStats }
+        };
+        return result;
+    }
 }

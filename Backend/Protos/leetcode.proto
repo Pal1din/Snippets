@@ -9,6 +9,7 @@ service LeetCodeService{
   rpc GetSolved(GetProfileRequest) returns (GetSolvedResponse);
   rpc GetCalendar(GetProfileRequest) returns (GetCalendarResponse);
   rpc GetSkillStats(GetProfileRequest) returns (GetSkillStatsResponse);
+  rpc GetLanguageStats(GetProfileRequest) returns (GetLanguageStatsResponse);
 }
 
 message GetProfileRequest {
@@ -27,6 +28,10 @@ message GetCalendarResponse {
 
 message GetSkillStatsResponse {
   repeated SkillStats skillStats = 1;
+}
+
+message GetLanguageStatsResponse {
+  repeated LanguageStats languageStats = 1;
 }
 
 message Profile {
@@ -100,4 +105,15 @@ message Fundamental {
   string tagName = 1;
   string tagSlug = 2;
   uint32 problemsSolved = 3;
+}
+
+message LanguageStats {
+  MatchedUser1 matchedUser = 1;
+}
+message MatchedUser1 {
+  repeated LanguageProblemCount languageProblemCount = 1;
+}
+message LanguageProblemCount {
+  string languageName = 1;
+  uint32 problemsSolved = 2;
 }
