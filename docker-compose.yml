@@ -1,0 +1,13 @@
+﻿services:
+  backend:
+    image: backend
+    build:
+      context: .
+      dockerfile: Backend/Dockerfile
+    ports:
+      - '8080:80'
+      
+  leetcode_api:
+    hostname: leetcode_api
+    image: alfaarghya/alfa-leetcode-api:2.0.1
+    restart: always
