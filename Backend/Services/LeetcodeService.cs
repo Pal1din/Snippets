@@ -1,9 +1,11 @@
 using Grpc.Core;
 using LeetCodeGrpcServer;
+using Microsoft.AspNetCore.Authorization;
 using RestSharp;
 
 namespace Backend.Services;
 
+[Authorize]
 public class LeetcodeService(IRestClient client) : LeetCodeGrpcServer.LeetCodeService.LeetCodeServiceBase
 {
     public override async Task<GetProfileResponse> GetProfile(GetProfileRequest request, ServerCallContext context)

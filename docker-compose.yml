@@ -1,13 +1,29 @@
 ﻿services:
-  backend:
+  nginx:
+    image: nginx
+    volumes:
+      - './nginx/templates:/etc/nginx/templates'
+      - './nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - './certs:/etc/ssl'
+    ports:
+      - '443:443'
+      - '8080:80'
+        
+        
+  grpc_server:
     image: backend
     build:
       context: .
       dockerfile: Backend/Dockerfile
-    ports:
-      - '8080:80'
       
   leetcode_api:
     hostname: leetcode_api
     image: alfaarghya/alfa-leetcode-api:2.0.1
     restart: always
+    
+  identityserver:
+    hostname: identityserver
+    image: identityserver
+    build:
+      context: .
+      dockerfile: IdentityServer/Dockerfile
