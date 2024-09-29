@@ -6,6 +6,7 @@ package leetcode;
 
 service LeetCodeService{
   rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc GetProfileList(GetProfileListRequest) returns (stream GetProfileResponse);
   rpc GetSolved(GetProfileRequest) returns (GetSolvedResponse);
   rpc GetCalendar(GetProfileRequest) returns (GetCalendarResponse);
   rpc GetSkillStats(GetProfileRequest) returns (GetSkillStatsResponse);
@@ -18,6 +19,11 @@ message GetProfileRequest {
 message GetProfileResponse {
   repeated Profile profile = 1;
 }
+
+message GetProfileListRequest {
+  repeated string username = 1;
+}
+
 message GetSolvedResponse {
   repeated Solved solved = 1;
 }

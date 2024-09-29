@@ -20,6 +20,21 @@ public class LeetcodeService(IRestClient client) : LeetCodeGrpcServer.LeetCodeSe
         return result;
     }
 
+    public override async Task GetProfileList(GetProfileListRequest request, IServerStreamWriter<GetProfileResponse> responseStream, ServerCallContext context)
+    {
+        foreach (var username in request.Username)
+        {
+            var restRequest = new RestRequest(username);
+            var executeAsync = await client.ExecuteAsync(restRequest);
+            var profile = Profile.Parser.ParseJson(executeAsync.Content);
+            var result = new GetProfileResponse
+            {
+                Profile = { profile }
+            };
+            await responseStream.WriteAsync(result);
+        }
+    }
+
     public override async Task<GetSolvedResponse> GetSolved(GetProfileRequest request, ServerCallContext context)
     {
         var restRequest = new RestRequest($"{request.Username}/solved");
