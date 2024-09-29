@@ -9,7 +9,7 @@ using RestSharp;
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(IPAddress.Loopback, 7110, listenOptions =>
+    options.Listen(IPAddress.Any, 443, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
         listenOptions.UseHttps();

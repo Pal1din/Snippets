@@ -2,10 +2,6 @@ upstream grpc_s {
     server grpc_server:80;
 }
  
-# upstream identityserver {
-#     server identityserver:443;
-# }
-
 # Перенаправление с HTTP на HTTPS
 server {
     listen 80 default_server;
@@ -48,10 +44,15 @@ server {
     add_header X-Frame-Options DENY;
     add_header X-Content-Type-Options nosniff;
     add_header X-XSS-Protection "1; mode=block";
-
-    # Настройка для токенов (IdentityServer)
-    location /connect/token {
-         proxy_pass https://identityserver;
+    
+# Проксирование gRPC-запросов
+    location /api/ {
+        proxy_pass http://grpc_s;
+        error_page 502 = /error502grpc;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     # Проксирование gRPC-запросов

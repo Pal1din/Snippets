@@ -20,5 +20,8 @@ RUN dotnet publish "Backend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:U
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENV ASPNETCORE_URLS=http://+:80
+COPY certs/snip.pfx /app/snip.pfx
+ENV ASPNETCORE_URLS=https://+:443
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/snip.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=123
 ENTRYPOINT ["dotnet", "Backend.dll"]
