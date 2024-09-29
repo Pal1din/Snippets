@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "IdentityServer";
+
+package identity;
+
+service AuthorizationService {
+  rpc GetToken(GetTokenRequest) returns(GetTokenResponse);
+}
+
+message GetTokenRequest {
+  string client_id = 1;
+  string client_secret = 2;
+  string grant_type = 3;
+}
+
+message GetTokenResponse {
+  string access_token = 1;
+  uint32 expires_in = 2;
+  string token_type = 3;
+  string scope = 4;
+}

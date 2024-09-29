@@ -1,30 +1,27 @@
-using System.Text;
+using System.Net;
 using Backend.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using IdentityOrm;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using RestSharp;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var key = "Thisismysecretkey"u8.ToArray();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(IPAddress.Loopback, 7110, listenOptions =>
     {
-        options.Authority = builder.Configuration.GetConnectionString("IdentityServer");
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration.GetConnectionString("IdentityServer"),
-            IssuerSigningKey = new SymmetricSecurityKey(key)
-        };
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        listenOptions.UseHttps();
     });
+});
 
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorization();
+builder.Services.AddDbContext<MyIdentityDbContext>(optionsBuilder => 
+    optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
+builder.Services.AddIdentityOrm()
+    .AddApiEndpoints();
 
 // Add services to the container.
 builder.Services.AddGrpc();
@@ -33,10 +30,6 @@ builder.Services.AddTransient<IRestClient>(
     _ => new RestClient(builder.Configuration.GetConnectionString("LeetCodeApi") ?? throw new ArgumentNullException()));
 
 var app = builder.Build();
-
-app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapGrpcReflectionService();
 
 app.MapGrpcService<LeetcodeService>();
@@ -44,5 +37,5 @@ app.MapGrpcService<LeetcodeService>();
 app.MapGet("/",
     () =>
         "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-
+app.MapIdentityApi<User>();
 app.Run();

@@ -8,8 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\resume.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\leetcode.proto" GrpcServices="Server" />
+        <Protobuf Include="Protos\*.proto" GrpcServices="Server" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,6 +22,10 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\IdentityOrm\IdentityOrm.csproj" />
     </ItemGroup>
 
 </Project>
