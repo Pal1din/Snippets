@@ -5,8 +5,8 @@ using RestSharp;
 
 namespace Backend.Services;
 
-[Authorize]
-public class LeetcodeService(IRestClient client) : LeetCodeGrpcServer.LeetCodeService.LeetCodeServiceBase
+//[Authorize]
+public class LeetcodeService(IRestClient client) : LeetCodeService.LeetCodeServiceBase
 {
     public override async Task<GetProfileResponse> GetProfile(GetProfileRequest request, ServerCallContext context)
     {
@@ -20,7 +20,8 @@ public class LeetcodeService(IRestClient client) : LeetCodeGrpcServer.LeetCodeSe
         return result;
     }
 
-    public override async Task GetProfileList(GetProfileListRequest request, IServerStreamWriter<GetProfileResponse> responseStream, ServerCallContext context)
+    public override async Task GetProfileList(GetProfileListRequest request,
+        IServerStreamWriter<GetProfileResponse> responseStream, ServerCallContext context)
     {
         foreach (var username in request.Username)
         {
@@ -72,7 +73,8 @@ public class LeetcodeService(IRestClient client) : LeetCodeGrpcServer.LeetCodeSe
         return result;
     }
 
-    public override async Task<GetLanguageStatsResponse> GetLanguageStats(GetProfileRequest request, ServerCallContext context)
+    public override async Task<GetLanguageStatsResponse> GetLanguageStats(GetProfileRequest request,
+        ServerCallContext context)
     {
         var restRequest = new RestRequest($"languageStats");
         restRequest.AddQueryParameter("username", request.Username);

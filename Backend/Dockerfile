@@ -2,7 +2,7 @@
 USER $APP_UID
 WORKDIR /app
 # Exposing port 443 for HTTPS
-EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -20,8 +20,8 @@ RUN dotnet publish "Backend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:U
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY certs/snip.pfx /app/snip.pfx
-ENV ASPNETCORE_URLS=https://+:443
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/snip.pfx
+COPY certs/cert.pfx /app/cert.pfx
+ENV ASPNETCORE_URLS=https://+:443;http://+:80
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/cert.pfx
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password=123
 ENTRYPOINT ["dotnet", "Backend.dll"]
