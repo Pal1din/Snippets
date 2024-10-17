@@ -5,7 +5,7 @@ using RestSharp;
 
 namespace Backend.Services;
 
-//[Authorize]
+[Authorize]
 public class LeetcodeService(IRestClient client) : LeetCodeService.LeetCodeServiceBase
 {
     public override async Task<GetProfileResponse> GetProfile(GetProfileRequest request, ServerCallContext context)

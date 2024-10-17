@@ -20,6 +20,7 @@ builder.Services.AddTransient<IRestClient>(
     _ => new RestClient(builder.Configuration.GetConnectionString("LeetCodeApi") ?? throw new ArgumentNullException()));
 
 var app = builder.Build();
+app.MapIdentityApi<User>();
 app.MapGrpcReflectionService();
 
 app.MapGrpcService<LeetcodeService>();

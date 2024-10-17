@@ -1,8 +1,5 @@
-upstream grpc_s {
+upstream grpc {
     server grpc_server:443;
-}
-upstream identity {
-    server identityserver:8080;
 }
  
 # Перенаправление с HTTP на HTTPS
@@ -48,8 +45,8 @@ server {
     add_header X-Content-Type-Options nosniff;
     add_header X-XSS-Protection "1; mode=block";
     
-    location /identity {
-        proxy_pass http://identity/login;
+    location /identity/login {
+        proxy_pass https://grpc/login;
         error_page 502 = /error502grpc;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -60,7 +57,7 @@ server {
     # Проксирование gRPC-запросов
     location / {
         # Важно использовать http2 при работе с gRPC
-        grpc_pass grpcs://grpc_s;
+        grpc_pass grpcs://grpc;
         error_page 502 = /error502grpc;
         #proxy_http_version 2;
         proxy_set_header Host $host;
