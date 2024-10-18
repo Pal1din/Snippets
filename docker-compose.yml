@@ -19,6 +19,7 @@ services:
       - './nginx/templates:/etc/nginx/templates'
       - './nginx/nginx.conf:/etc/nginx/nginx.conf'
       - './certs:/etc/ssl'
+      - './nginx/custom_418.html:/etc/nginx/www/custom_418.html'
     ports:
       - '443:443'
         
